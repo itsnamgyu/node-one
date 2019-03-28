@@ -3,7 +3,7 @@ const app = express();
 
 const logger = require('morgan');
 
-app.use('/static', express.static('static'));
+app.use('/static', express.static('public'));
 app.use(logger('dev'));
 
 app.get('/', function (req, res) {
