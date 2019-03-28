@@ -1,0 +1,24 @@
+{
+  "name": "rest-one",
+  "version": "1.0.0",
+  "description": "Simple REST API + Client using Node.js and ExpressJS",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsnamgyu/rest-one.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itsnamgyu/rest-one/issues"
+  },
+  "homepage": "https://github.com/itsnamgyu/rest-one#readme"
+}
