@@ -1,8 +1,6 @@
 # rest-one
 Simple REST API + Client using Express and Backbone.js
 
-___
-![wow!](docs/example.png)
 
 ## API
 
@@ -23,6 +21,11 @@ Delete an existing user
 
 ### Issues
 How to differentiate POST vs PUT...
+
+
+## Console Screenshot
+![wow!](docs/example.png)
+
 
 ## Limitations
 - JSON file based User database (DB is not a area of interest)
