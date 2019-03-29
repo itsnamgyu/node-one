@@ -2,7 +2,7 @@
 Simple REST API + Client using Express and Backbone.js
 
 
-## API
+## User API
 
 #### GET /api/user/
 Retrieve a list of existing users
