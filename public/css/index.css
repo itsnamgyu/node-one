@@ -1,0 +1,19 @@
+.card {
+    margin-top: 1rem;
+    border-radius: 1rem;
+    border: none;
+    padding: 1.8rem;
+    box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.12);
+}
+
+.user-info {
+    flex-grow: 1;
+}
+
+.user-delete {
+}
+
+body {
+    margin-bottom: 4rem;
+
+}
