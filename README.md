@@ -7,16 +7,16 @@ ___
 ## API
 
 ### GET /api/user/
-Get's a list of users
+Retrieve a list of existing users
 
 ### POST /api/user/
-Add a user or edit an existing user
+Create a new user or overwrite an existing user
 
 ### GET /api/user/:userID
-Get user with given `userID`
+Get user info
 
 ### PUT /api/user/:userID
-Edit an existing user (cannot create a new one)
+Edit (overwrite) an existing user (cannot create a new one)
 
 ### DELETE /api/user/:userID
 Delete an existing user
