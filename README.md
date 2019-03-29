@@ -19,7 +19,8 @@ Edit (overwrite) an existing user (cannot create a new one)
 Delete an existing user
 
 ### Issues
-How to differentiate POST vs PUT...
+- Need to tweak specifications of POST vs PUT
+- Complete this doc...
 
 
 ## Console Screenshot
