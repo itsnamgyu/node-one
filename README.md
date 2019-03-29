@@ -31,4 +31,5 @@ Delete an existing user
 ## Limitations
 - JSON file based User database (DB is not an area of interest)
 - Updating a model is not supported on the frontend, only the API.
-- The backend does not manage user id (pk). The index page simply generates a random id for each new user.
+- The backend does not manage primary keys. The index page simply generates a random id for each new user; to minimize DB implementation.
+- Doesn't support authentication, communicating primary keys, etc.
