@@ -4,19 +4,19 @@ Simple REST API + Client using Express and Backbone.js
 
 ## API
 
-### GET /api/user/
+#### GET /api/user/
 Retrieve a list of existing users
 
-### POST /api/user/
+#### POST /api/user/
 Create a new user or overwrite an existing user
 
-### GET /api/user/:userID
+#### GET /api/user/:userID
 Get user info
 
-### PUT /api/user/:userID
+#### PUT /api/user/:userID
 Edit (overwrite) an existing user (cannot create a new one)
 
-### DELETE /api/user/:userID
+#### DELETE /api/user/:userID
 Delete an existing user
 
 ### Issues
