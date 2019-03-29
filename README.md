@@ -1,6 +1,5 @@
 # rest-one
-Simple REST API + Client using Express and Backbone.js
-
+A REST API for a simple user model comprised of a `name` and an `email` address. Backend implemented using NodeJS from [this tutorial](https://www.tutorialspoint.com/nodejs/index.htm). Frontend console implemented using Backbone.js from [that tutorial](https://adrianmejia.com/blog/2012/09/11/backbone-dot-js-for-absolute-beginners-getting-started/).
 
 ## User API
 
@@ -24,6 +23,7 @@ How to differentiate POST vs PUT...
 
 
 ## Console Screenshot
+
 ![wow!](docs/example.png)
 
 
