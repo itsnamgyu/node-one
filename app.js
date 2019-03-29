@@ -9,6 +9,7 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({'extended': false}));
 app.use(bodyParser.json());
 
+app.use('', require('./routes/index'));
 app.use('/api/user', require('./routes/api'));
 
 app.listen(8081, function () {
