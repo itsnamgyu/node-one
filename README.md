@@ -2,25 +2,53 @@
 
 ## User API
 
-#### GET /api/user/
+### GET /api/user/
 Retrieve a list of existing users
 
-#### POST /api/user/
+#### Parameters
+None
+
+#### Response
+List of user objects
+
+### POST /api/user/
 Create a new user or overwrite an existing user
 
-#### GET /api/user/:userID
+#### Parameters
+name: string, required
+email: string, required
+
+#### Response
+User object
+
+### GET /api/user/:userID
 Get user info
 
-#### PUT /api/user/:userID
+#### Parameters
+None
+
+#### Response
+User object
+
+### PUT /api/user/:userID
 Edit (overwrite) an existing user (cannot create a new one)
+
+#### Parameters
+id: integer, required
+name: string, required
+email: string, required
+
+#### Response
+User object
 
 #### DELETE /api/user/:userID
 Delete an existing user
 
-### Issues
-- Need to tweak specifications of POST vs PUT
-- Complete this doc...
+#### Parameters
+None
 
+#### Response
+User object
 
 ## Console Screenshot
 
@@ -28,7 +56,5 @@ Delete an existing user
 
 
 ## Limitations
-- JSON file based User database (DB is not an area of interest)
 - Updating a model is not supported on the frontend, only the API.
-- The backend does not manage primary keys. The index page simply generates a random id for each new user; to minimize DB implementation.
-- Doesn't support authentication, communicating primary keys, etc.
+- Doesn't support authentication etc.
