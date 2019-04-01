@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": "rest_admin",
+    "password": "password",
+    "host": "localhost",
+    "database": "postgres",
+    "schema": "rest_one"
+  }
+}
