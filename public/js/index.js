@@ -1,9 +1,9 @@
 const app = {};
 
 app.User = Backbone.Model.extend({
+    idAttribute: 'id',
     defaults: function () {
         return {
-            id: Math.floor(Math.random() * 1000000000),
             name: '',
             email: '',
         };
@@ -75,6 +75,7 @@ app.UserListView = Backbone.View.extend({
     },
     addUser: function (userModel) {
         console.log('Adding user!');
+        console.log(userModel);
         this.$el.append(new app.UserView({
             model: userModel,
         }).render().el);
