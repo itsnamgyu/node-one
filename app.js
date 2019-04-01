@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 app.use('', require('./routes/index'));
 app.use('/api/user', require('./routes/api'));
 
-app.listen(8081, function () {
-    console.log('Starting server at port 8081...');
+const port = 3000;
+app.listen(port, function () {
+    console.log('Starting server at port ' + port + '...');
 });
