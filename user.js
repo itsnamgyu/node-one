@@ -8,58 +8,39 @@
     * Note that id (pk) is not managed by the server for simplicity sake.
  */
 
-const fs = require('fs');
-const path = require('path');
-const ajv = require('ajv')({allErrors: true});
+const ajv = require('ajv')({ allErrors: true, removeAdditional: true, });
 
-const userJson = path.join(__dirname, 'user.json');
-const userSchema = {
+const fullUserSchema = {
     "properties": {
-        "id": { "type": "number" },
+        "id": {
+            "type": [ "integer", "string" ],
+            "pattern": "^\\d+$"
+        },
         "name": { "type": "string" },
         "email": { "type": "string" },
-    }
+    },
+    "required": [
+        "id", "name", "email",
+    ],
+};
+const newUserSchema = {
+    "properties": {
+        "id": {
+            "type": [ "integer", "string" ],
+            "pattern": "^\d+$"
+        },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+    },
+    "required": [
+        "name", "email",
+    ],
 };
 
-const validateUser = ajv.compile(userSchema);
-
-if (!fs.existsSync(userJson)) {
-    console.log('Creating user file: ' + userJson);
-    fs.writeFileSync(userJson, JSON.stringify({}));
-}
-
-function getAll() {
-    return new Promise((resolve, reject) => {
-        fs.readFile(userJson, (e, data) => {
-            if (e) {
-                reject(e);
-                return;
-            }
-            resolve(JSON.parse(data.toString()));
-        })
-    });
-}
-
-function saveAll(data) {
-    return new Promise((resolve, reject) => {
-        const string = JSON.stringify(data);
-        if (string === undefined) {
-            reject('data is invalid');
-            return;
-        }
-        console.log('Saving: ' + string);
-        fs.writeFile(userJson, string, (e) => {
-            if (e) {
-                reject(e);
-            } else{
-                resolve();
-            }
-        });
-    });
-}
+const validateNewUser = ajv.compile(newUserSchema);
+const validateFullUser = ajv.compile(fullUserSchema);
 
 module.exports = {
-    getAll,
-    saveAll,
-    validateUser,
+    validateNewUser,
+    validateFullUser,
 };

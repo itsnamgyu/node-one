@@ -1,14 +1,16 @@
 const express = require('express');
-const _ = require('underscore');
 
 const router = express.Router();
 const Users = require('../user');
+const Database = require('../database');
+
+const pool = Database.getPool();
 
 router.route('/')
     .get((req, res) => {
-        Users.getAll()
+        pool.query('SELECT * FROM rest_one.user')
             .then((users) => {
-                res.json(_.values(users));
+                res.json(users.rows);
             })
             .catch((e) => {
                 console.log(e.stack);
@@ -18,7 +20,7 @@ router.route('/')
     .post((req, res) => {
         const user = req.body;
 
-        if (!Users.validateUser(user)) {
+        if (!Users.validateNewUser(user)) {
             console.log('invalid!');
             res.status(400).json({
                 'error_message': 'invalid user schema',
@@ -26,90 +28,70 @@ router.route('/')
             return;
         }
 
-        Users.getAll()
-            .then((users) => {
-                users[user.id] = user;
-                return users;
-            })
-            .then((updatedUsers) => {
-                Users.saveAll(updatedUsers)
-                    .then(() => {
-                        res.json(user);
-                    });
-            })
-            .catch((e) => {
-                console.log(e.stack);
-                res.sendStatus(500);
-            })
+        console.log(Object.keys(user).join(','));
+        console.log(Object.values(user).join(','));
+        pool.query('INSERT INTO rest_one.user (name, email) VALUES ($1, $2) RETURNING *', [user.name, user.email])
+            .then((result) => {
+                console.log('POSTED user:');
+                console.log(result.rows[0]);
+                res.json(result.rows[0]);
+        });
     });
 
 router.route('/:userId')
     .get((req, res) => {
         const id = req.params.userId;
 
-        Users.getAll()
-            .then((users) => {
-                if (id in users) {
-                    res.json(users[id]);
-                } else {
-                    res.status(400).json({
-                        'error_message': 'could not find user',
+        pool.query('SELECT * FROM rest_one.user WHERE id=$1', [id])
+            .then((result) => {
+                if (result.rowCount === 0) {
+                    res.status(404).json({
+                        'error_message': 'user not found',
                     });
+                } else {
+                    res.json(result.rows[0]);
                 }
-            })
+            });
     })
     .put((req, res) => {
+        const id = req.params.userId;
         const user = req.body;
 
-        if (!Users.validateUser(user)) {
+        if (!Users.validateFullUser(user)) {
             res.status(400).json({
-                'error_message': 'invalid user schema',
+                'error_message': 'invalid user schema: ' + Users.validateFullUser.errors,
             });
             return;
         }
 
-        if (!('id' in user)) {
+        if (user.id !== id) {
             res.status(400).json({
-                'error_message': 'user does not exist',
-            })
+                'error_message': 'user id invalid',
+            });
+            return;
         }
 
-        Users.getAll()
-            .then((users) => {
-                users[user.id] = user;
-                return users;
-            })
-            .then((updatedUsers) => {
-                Users.saveAll(updatedUsers)
-                    .then(() => {
-                        res.json(user);
+        pool.query('SELECT * FROM rest_one.user WHERE id=$1', [id])
+            .then((result) => {
+                if (result.rowCount === 0) {
+                    res.status(404).json({
+                        'error_message': 'user not found',
                     });
-            })
-            .catch((e) => {
-                console.log(e.stack);
-                res.sendStatus(500);
+                }
+            });
+
+        const q = 'UPDATE rest_one.user SET name = $1, email = $2 WHERE id=$3 RETURNING *';
+        pool.query(q, [user.name, user.email, id])
+            .then((result) => {
+                res.json(result.rows[0]);
             });
     })
     .delete((req, res) => {
         const id = req.params.userId;
-        Users.getAll()
-            .then((users) => {
-                if (!(id in users)) {
-                    res.status(400).json({
-                        'error_message': 'could not find user',
-                    });
-                    return;
-                }
-                const userString = JSON.stringify(users[id]);
-                delete users[id];
-                Users.saveAll(users)
-                    .then(() => {
-                        res.send(userString);
-                    });
-            })
-            .catch((e) => {
-                console.log(e.stack);
-                res.status(500);
+
+        pool.query('DELETE FROM rest_one.user WHERE id=$1 RETURNING *', [id])
+            .then((result) => {
+                res.json(result.rows[0]);
             });
     });
 
