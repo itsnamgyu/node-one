@@ -1,8 +1,16 @@
 const express= require('express');
 const app = express();
-
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+
+
+const Database = require('./database');
+if (app.get('env') === 'development') {
+    Database.initPool('dev');
+} else {
+    console.log('Configure app.js for non-development environment');
+}
+
 
 app.use('/static', express.static('public'));
 app.use(logger('dev'));

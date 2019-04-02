@@ -3,27 +3,33 @@ const Pool = require('pg').Pool;
 
 let pool = null;
 
+function initPool(env='dev') {
+    try {
+        const string = fs.readFileSync(__dirname + '/database.json').toString();
+        const json = JSON.parse(string);
+        const conf = json[env];
+        pool = new Pool({
+            user: conf.user,
+            host: conf.host,
+            database: conf.database,
+            password: conf.password,
+            port: conf.port,
+        });
+    } catch (e) {
+        console.log('Misconfigured database.json');
+        throw e;
+    }
+}
+
 function getPool() {
     if (!pool) {
-        try {
-            const string = fs.readFileSync(__dirname + '/database.json').toString();
-            const json = JSON.parse(string);
-            const conf = json.dev;
-            pool = new Pool({
-                user: conf.user,
-                host: conf.host,
-                database: conf.database,
-                password: conf.password,
-                port: conf.port,
-            });
-        } catch (e) {
-            console.log('Misconfigured database.json');
-            throw e;
-        }
+        console.log('Did not explicitly call initPool. Initializing in dev mode');
+        initPool('dev');
     }
     return pool;
 }
 
 module.exports = {
+    initPool,
     getPool,
 };
