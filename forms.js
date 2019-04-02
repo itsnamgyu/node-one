@@ -1,5 +1,5 @@
 /*
-    user.js
+    forms.js
 
     - Handles reading, loading of filesystem data (users.json for now).
     - Probably does not follow JS best practices
@@ -23,6 +23,7 @@ const fullUserSchema = {
         "id", "name", "email",
     ],
 };
+
 const newUserSchema = {
     "properties": {
         "id": {
