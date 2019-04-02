@@ -4,9 +4,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 
 
-const Database = require('./database');
 if (app.get('env') === 'development') {
-    Database.initPool('dev');
+    require('./database').init('dev');
 } else {
     console.log('Configure app.js for non-development environment');
 }

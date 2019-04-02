@@ -3,7 +3,7 @@ const Pool = require('pg').Pool;
 
 let pool = null;
 
-function initPool(env='dev') {
+function init(env='dev') {
     try {
         const string = fs.readFileSync(__dirname + '/database.json').toString();
         const json = JSON.parse(string);
@@ -23,13 +23,13 @@ function initPool(env='dev') {
 
 function getPool() {
     if (!pool) {
-        console.log('Did not explicitly call initPool. Initializing in dev mode');
-        initPool('dev');
+        console.log('Did not explicitly call init. Initializing in dev mode');
+        init('dev');
     }
     return pool;
 }
 
 module.exports = {
-    initPool,
+    init,
     getPool,
 };
