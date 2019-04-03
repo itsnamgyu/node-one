@@ -14,7 +14,6 @@ router.route('/')
 
 router.route('/login')
     .get((req, res) => {
-        req.flash('ho!');
         if (req.user !== undefined) {
             res.redirect('/user');
         } else {
@@ -24,7 +23,6 @@ router.route('/login')
     .post(passport.authenticate('local', {
             successRedirect: '/user',
             failureRedirect: '/user/login',
-            failureFlash: true,
         }));
 
 router.route('/signup')
