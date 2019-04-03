@@ -1,7 +1,6 @@
 const express = require('express');
 
 const router = express.Router();
-const Forms = require('../forms');
 const Database = require('../database');
 
 const pool = Database.getPool();
@@ -19,14 +18,6 @@ router.route('/')
     })
     .post((req, res) => {
         const user = req.body;
-
-        if (!Forms.validateNewUser(user)) {
-            console.log('invalid!');
-            res.status(400).json({
-                'error_message': 'invalid user schema',
-            });
-            return;
-        }
 
         console.log(Object.keys(user).join(','));
         console.log(Object.values(user).join(','));
@@ -56,13 +47,6 @@ router.route('/:userId')
     .put((req, res) => {
         const id = req.params.userId;
         const user = req.body;
-
-        if (!Forms.validateFullUser(user)) {
-            res.status(400).json({
-                'error_message': 'invalid user schema: ' + Forms.validateFullUser.errors,
-            });
-            return;
-        }
 
         if (user.id !== id) {
             res.status(400).json({
