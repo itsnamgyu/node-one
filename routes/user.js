@@ -25,6 +25,12 @@ router.route('/login')
             failureRedirect: '/user/login',
         }));
 
+router.route('/logout')
+    .get((req, res) => {
+        req.logout();
+        res.redirect('/user/login');
+    });
+
 router.route('/signup')
     .get((req, res) => {
         res.sendFile(path.join(viewsDir, 'signup.html'));
