@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 
-const User = require('./user');
+const User = require('./db/user');
 
 let initialized = false;
 

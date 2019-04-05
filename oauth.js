@@ -1,7 +1,6 @@
 const oauth2orize = require('oauth2orize');
 const server = oauth2orize.createServer();
 
-
 server.serializeClient(function(client, done) {
     return done(null, client.id);
 });

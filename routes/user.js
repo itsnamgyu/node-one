@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
-const User = require('../User');
+const User = require('../db/user');
 const passport = require('../passport').passport;
 
 const viewsDir = path.join(path.dirname(__dirname), 'views');

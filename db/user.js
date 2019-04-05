@@ -1,4 +1,4 @@
-const pool = require('./database').getPool();
+const pool = require('../database').getPool();
 const bcrypt = require('bcrypt');
 
 
