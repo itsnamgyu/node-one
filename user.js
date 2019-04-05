@@ -41,6 +41,10 @@ function findUserBy(key, value) {
             } else {
                 return null;
             }
+        })
+        .catch(e => {
+            console.stack();
+            console.log(e);
         });
 }
 
@@ -50,6 +54,42 @@ function findUserById(id) {
 
 function findUserByEmail(email) {
     return findUserBy('email', email);
+}
+
+function findCredential(id, provider) {
+    return pool.query('SELECT user_id FROM rest_one.login_credential WHERE id=$1 AND provider=$2', [id, provider]);
+}
+
+function addCredential(userId, id, provider) {
+    return pool.query('INSERT INTO rest_one.login_credential (id, provider ,user_id) VALUES ($1, $2, $3)',
+        [id, provider, userId]);
+}
+
+function findUserByCredential(id, provider) {
+    return findCredential(id, provider)
+        .then(q => {
+            if (q.rowCount > 0) {
+                const userId = q.rows[0]['user_id'];
+                return pool.query('SELECT * FROM rest_one.user WHERE id=$1', [userId]);
+            } else {
+                throw null;
+            }
+        })
+        .then(q => {
+            if (q.rowCount > 0) {
+                return q.rows[0];
+            } else {
+                console.trace();
+                console.error('[critical] Found login_credential but no associated user');
+                return null;
+            }
+        })
+        .catch(e => {
+            if (e == null) {
+                return null;
+            }
+            throw e;
+        })
 }
 
 function saveUser(user) {
@@ -106,18 +146,26 @@ function createUser(email, password, name) {
             }
         })
         .then(() => {
-            return bcrypt.hash(password, 10)
-                .then((hash) => {
-                    const user = {
-                        email: email,
-                        hash: hash,
-                        name: name,
-                    };
-                    return _createUser(user);
-                });
+            const user = {
+                email: email,
+                hash: null,
+                name: name,
+            };
+
+            if (password) {
+                return bcrypt.hash(password, 10)
+                    .then((hash) => {
+                        user.hash = hash;
+                        return user;
+                    });
+            } else {
+                return user;
+            }
+        })
+        .then(user => {
+            _createUser(user);
         });
 }
-
 
 module.exports = {
     UserNotFoundError,
@@ -130,4 +178,6 @@ module.exports = {
     loginUser,
     createUser,
     saveUser,
+    addCredential,
+    findUserByCredential,
 };

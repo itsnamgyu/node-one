@@ -47,4 +47,13 @@ router.route('/signup')
             });
     });
 
+router.route('/auth/github')
+    .get(passport.authenticate('github'));
+
+router.route('/auth/github/callback')
+    .get(passport.authenticate('github', {
+    successRedirect: '/user',
+    failureRedicret: '/user/login',
+}));
+
 module.exports = router;
