@@ -121,14 +121,6 @@ passport.deserializeUser((id, done) => {
         });
 });
 
-passport.loginRequired = function(req, res, next) {
-    if (req.user == null) {
-        res.redirect('/user/login');
-    } else {
-        next();
-    }
-};
-
 module.exports = {
     passport,
     init,
