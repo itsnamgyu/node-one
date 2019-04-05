@@ -29,6 +29,7 @@ app.use(passport.session({
 app.use('', require('./routes/index'));
 app.use('/user', require('./routes/user'));
 app.use('/api/user', require('./routes/api'));
+app.use('/oauth', require('./routes/oauth'));
 
 const port = 3000;
 app.listen(port, function () {

@@ -1,9 +1,10 @@
 const passport = require('passport');
 const fs = require('fs');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('./user');
 const GitHubStrategy = require('passport-github').Strategy;
+const ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 
+const User = require('./user');
 
 let initialized = false;
 
@@ -102,6 +103,10 @@ function init() {
                     })
             }
         ));
+        passport.use('oauth2-client-password', new ClientPasswordStrategy((clientId, clientSecret, done) => {
+            // TODO: verify clientId and clientSecret
+            throw new Error('Not implemented');
+        }));
         initialized = true;
     }
 }
