@@ -28,3 +28,17 @@ module.exports.createClient = (userId, clientName, redirectURI) => {
             }
         });
 };
+
+module.exports.getVerifiedClient = (id, redirectURI) => {
+    module.exports.getClientById(id)
+        .then(client => {
+            if (client == null || client.redirect_uri !== redirectURI) {
+                return false;
+            } else {
+                done(null, client);
+            }
+        })
+        .catch(e => {
+            done(e);
+        });
+};
