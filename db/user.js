@@ -179,6 +179,32 @@ function getAllUsers() {
         })
 }
 
+function updateUser(user) {
+    const q = 'UPDATE rest_one.user SET name = $1, email = $2 WHERE id=$3 RETURNING *';
+    return pool.query(q, [user.name, user.email, user.id])
+        .then(user => {
+            return user;
+        })
+        .catch(e => {
+            console.trace();
+            console.error(e);
+            return null;
+        })
+}
+
+function deleteUser(id) {
+    return pool.query('DELETE FROM rest_one.user WHERE id=$1 RETURNING *', [id])
+        .then(user => {
+            if (user) {
+                return user;
+            } else {
+                console.trace();
+                console.error('error deleting user');
+                return null;
+            }
+        });
+}
+
 module.exports = {
     UserNotFoundError,
     AuthenticationError,
@@ -193,4 +219,6 @@ module.exports = {
     addCredential,
     findUserByCredential,
     getAllUsers,
+    updateUser,
+    deleteUser,
 };
