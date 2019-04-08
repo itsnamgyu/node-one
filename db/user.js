@@ -167,6 +167,18 @@ function createUser(email, password, name) {
         });
 }
 
+function getAllUsers() {
+    return pool.query('SELECT * FROM rest_one.user')
+        .then(q => {
+            return q.rows;
+        })
+        .catch(e => {
+            console.error(e);
+            console.trace();
+            throw e;
+        })
+}
+
 module.exports = {
     UserNotFoundError,
     AuthenticationError,
@@ -180,4 +192,5 @@ module.exports = {
     saveUser,
     addCredential,
     findUserByCredential,
+    getAllUsers,
 };

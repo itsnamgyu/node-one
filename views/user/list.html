@@ -6,14 +6,32 @@
 
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/css/index.css">
 
   <title>Rest One - User</title>
 </head>
 <body>
-<div class="container">
+<div class="container py-5">
   <div class="row">
-    <div class="col-12">
-      <h1 class="mt-5 font-weight-bold">Hi <%= user.name %></h1>
+    <% if (user) { %>
+    <div class="col-12 text-right">
+      <p>Hi, <%= user.name %></p>
+    </div>
+    <% } else { %>
+    <div class="col-12 text-right">
+      <a href="/user/login">Login</a>
+    </div>
+    <% } %>
+    <div class="col-12 mt-5">
+      <h1>User List</h1>
+    </div>
+    <div class="col-12 mt-4">
+      <% for (u of users) { %>
+      <div class="card">
+        <a href="/user/<%= u.id %>"><h3 class="m-0"><%= u.name %></h3></a>
+        <h5 class="mt-2 mb-0"><%= u.email %></h5>
+      </div>
+      <% } %>
     </div>
   </div>
 </div>

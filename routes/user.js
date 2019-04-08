@@ -10,14 +10,18 @@ const viewsDir = path.join(path.dirname(__dirname), 'views');
 
 router.route('/')
     .get(ensureLoggedIn('/user/login'), (req, res) => {
-        res.redirect('/user/me');
+        res.redirect('/user/list');
     });
 
-router.route('/me')
-    .get(ensureLoggedIn('/user/login'), (req, res) => {
-        res.render('user/me.html', {
-            user: req.user,
-        });
+router.route('/list')
+    .get((req, res) => {
+        User.getAllUsers()
+            .then(users => {
+                res.render('user/list.html', {
+                    user: req.user,
+                    users: users,
+                });
+            });
     });
 
 router.route('/login')
@@ -29,7 +33,7 @@ router.route('/login')
         }
     })
     .post(passport.authenticate('local', {
-            successRedirect: '/user/me',
+            successRedirect: '/user/list',
             failureRedirect: '/user/login',
         }));
 
