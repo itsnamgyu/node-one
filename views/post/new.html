@@ -13,27 +13,18 @@
 <body>
 <div class="container py-5">
   <div class="row">
-    <% if (user) { %>
     <div class="col-12 text-right">
       <p>Hi, <%= user.name %></p>
     </div>
-    <% } else { %>
-    <div class="col-12 text-right">
-      <a href="/user/login">Login</a>
-    </div>
-    <% } %>
     <div class="col-12 mt-5">
-      <h1>Rest One</h1>
-      <h2 class="mt-5">Links</h2>
-      <% if (user == null) { %>
-      <a class="d-block mt-3" href="/user/login"><h4>Log In</h4></a>
-      <% } %>
-      <a class="d-block mt-3" href="/user/me"><h4>Your Profile</h4></a>
-      <a class="d-block mt-3" href="/user"><h4>User List</h4></a>
-      <a class="d-block mt-3" href="/post/new"><h4>New Post</h4></a>
-      <% if (user) { %>
-      <a class="d-block mt-3" href="/user/logout"><h4>Log Out</h4></a>
-      <% } %>
+      <h1>New Post</h1>
+      <form method="post">
+        <label for="form-title">Title</label>
+        <input class="form-control" id="form-title" name="title">
+        <label for="form-title">Content</label>
+        <input class="form-control" id="form-content" name="content">
+        <button class="btn btn-primary mt-4" type="submit">Submit</button>
+      </form>
     </div>
   </div>
 </div>

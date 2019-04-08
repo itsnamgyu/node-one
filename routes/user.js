@@ -3,6 +3,7 @@ const router = express.Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const User = require('../db/user');
+const Post = require('../db/post');
 const passport = require('../passport').passport;
 
 router.route('/')
@@ -71,18 +72,31 @@ router.route('/signup')
 router.route('/:userId')
     .get((req, res) => {
         const id = req.params.userId;
+        let _user = null;
 
         User.findUserById(id)
             .then(user => {
                 if (user == null) {
                     res.send('User not found');
+                    return Promise.reject(null);
                 } else {
-                    res.render('user/profile.html', {
-                        user: req.user,
-                        profile: user,
-                    })
+                    _user = user;
+                    return Post.getPostsByUser(user.id);
                 }
-            });
+            })
+            .then(posts => {
+                res.render('user/profile.html', {
+                    user: req.user,
+                    profile: _user,
+                    posts: posts,
+                })
+            })
+            .catch(e => {
+                if (e) {
+                    console.trace();
+                    res.send('server error');
+                }
+            })
     });
 
 router.route('/auth/github')

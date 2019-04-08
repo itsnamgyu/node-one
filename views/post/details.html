@@ -22,18 +22,11 @@
       <a href="/user/login">Login</a>
     </div>
     <% } %>
+
     <div class="col-12 mt-5">
-      <h1>Rest One</h1>
-      <h2 class="mt-5">Links</h2>
-      <% if (user == null) { %>
-      <a class="d-block mt-3" href="/user/login"><h4>Log In</h4></a>
-      <% } %>
-      <a class="d-block mt-3" href="/user/me"><h4>Your Profile</h4></a>
-      <a class="d-block mt-3" href="/user"><h4>User List</h4></a>
-      <a class="d-block mt-3" href="/post/new"><h4>New Post</h4></a>
-      <% if (user) { %>
-      <a class="d-block mt-3" href="/user/logout"><h4>Log Out</h4></a>
-      <% } %>
+      <h1><%= post.title %></h1>
+      <h4>By <a href="/user/<%= author.id %>"><%= author.name %></a></h4>
+      <p class="mt-5"><%= post.content %></p>
     </div>
   </div>
 </div>

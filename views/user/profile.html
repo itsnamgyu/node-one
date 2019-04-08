@@ -22,15 +22,24 @@
       <a href="/user/login">Login</a>
     </div>
     <% } %>
+
     <div class="col-12 mt-5">
       <h1>Profile</h1>
     </div>
+
     <div class="col-12 mt-4">
-      <h2>ID: <%= profile.id %></h2>
-      <h2>Name: <%= profile.name %></h2>
-      <h2>Email: <%= profile.email %></h2>
+      <h4>ID: <%= profile.id %></h4>
+      <h4>Name: <%= profile.name %></h4>
+      <h4>Email: <%= profile.email %></h4>
+
+      <h2 class="mt-5">Posts</h2>
+      <% for (post of posts) { %>
+      <div class="card">
+        <h3><%= post.title %></h3>
+        <h5><%= post.content %></h5>
+      </div>
+      <% } %>
     </div>
-  </div>
   </div>
 </div>
 
