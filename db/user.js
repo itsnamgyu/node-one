@@ -163,7 +163,7 @@ function createUser(email, password, name) {
             }
         })
         .then(user => {
-            _createUser(user);
+            return _createUser(user);
         });
 }
 
