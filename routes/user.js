@@ -1,18 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
-const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const User = require('../db/user');
 const passport = require('../passport').passport;
-
-const viewsDir = path.join(path.dirname(__dirname), 'views');
 
 router.route('/')
     .get((req, res) => {
         User.getAllUsers()
             .then(users => {
-                res.render('user/console.html', {
+                res.render('user/index.html', {
                     user: req.user,
                     users: users,
                 });
@@ -24,7 +20,7 @@ router.route('/login')
         if (req.user !== undefined) {
             res.redirect('/user');
         } else {
-            res.sendFile(path.join(viewsDir, 'user/login.html'));
+            res.render('user/login.html');
         }
     })
     .post(passport.authenticate('local', {
@@ -40,7 +36,7 @@ router.route('/logout')
 
 router.route('/signup')
     .get((req, res) => {
-        res.sendFile(path.join(viewsDir, 'user/signup.html'));
+        res.render('user/signup.html');
     })
     .post((req, res) => {
         const body = req.body;
