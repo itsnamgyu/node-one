@@ -168,7 +168,7 @@ function createUser(email, password, name) {
 }
 
 function getAllUsers() {
-    return pool.query('SELECT * FROM rest_one.user')
+    return pool.query('SELECT id, name, email FROM rest_one.user')
         .then(q => {
             return q.rows;
         })

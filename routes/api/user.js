@@ -4,10 +4,11 @@ const router = express.Router();
 const Database = require('../../database');
 
 const pool = Database.getPool();
+const User = require('../../db/user');
 
 router.route('/')
     .get((req, res) => {
-        pool.query('SELECT * FROM rest_one.user')
+        User.getAllUsers()
             .then((users) => {
                 res.json(users.rows);
             })
@@ -32,6 +33,7 @@ router.route('/')
 router.route('/:userId')
     .get((req, res) => {
         const id = req.params.userId;
+
 
         pool.query('SELECT * FROM rest_one.user WHERE id=$1', [id])
             .then((result) => {
