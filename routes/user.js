@@ -12,7 +12,7 @@ router.route('/')
     .get((req, res) => {
         User.getAllUsers()
             .then(users => {
-                res.render('user/index.html', {
+                res.render('user/console.html', {
                     user: req.user,
                     users: users,
                 });
