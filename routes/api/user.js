@@ -18,8 +18,6 @@ router.route('/')
         const user = req.body;
         User.createUser(user.email, null, user.name)
             .then((user) => {
-                console.log('Created user:');
-                console.log(user);
                 res.json(user);
             });
     });
