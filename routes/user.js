@@ -27,6 +27,24 @@ router.route('/me')
             });
     });
 
+router.route('/:userId')
+    .get((req, res) => {
+        const id = req.params.userId;
+
+        User.findUserById(id)
+            .then(user => {
+                if (user == null) {
+                    res.send('User not found');
+                } else {
+                    res.render('user/profile.html', {
+                        user: req.user,
+                        profile: user,
+                    })
+
+                }
+            });
+    });
+
 router.route('/login')
     .get((req, res) => {
         if (req.user !== undefined) {
