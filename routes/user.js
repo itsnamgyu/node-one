@@ -17,17 +17,6 @@ router.route('/')
             });
     });
 
-router.route('/me')
-    .get(ensureLoggedIn('/user/login'),
-        (req, res) => {
-        User.getAllUsers()
-            .then(users => {
-                res.render('user/me.html', {
-                    user: req.user,
-                });
-            });
-    });
-
 router.route('/login')
     .get((req, res) => {
         if (req.user !== undefined) {
