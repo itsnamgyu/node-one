@@ -27,24 +27,6 @@ router.route('/me')
             });
     });
 
-router.route('/:userId')
-    .get((req, res) => {
-        const id = req.params.userId;
-
-        User.findUserById(id)
-            .then(user => {
-                if (user == null) {
-                    res.send('User not found');
-                } else {
-                    res.render('user/profile.html', {
-                        user: req.user,
-                        profile: user,
-                    })
-
-                }
-            });
-    });
-
 router.route('/login')
     .get((req, res) => {
         if (req.user !== undefined) {
@@ -54,9 +36,9 @@ router.route('/login')
         }
     })
     .post(passport.authenticate('local', {
-            successRedirect: '/user',
-            failureRedirect: '/user/login',
-        }));
+        successRedirect: '/user',
+        failureRedirect: '/user/login',
+    }));
 
 router.route('/logout')
     .get((req, res) => {
@@ -83,6 +65,23 @@ router.route('/signup')
             .catch(e => {
                 console.log(e);
                 res.redirect('/user/signup');
+            });
+    });
+
+router.route('/:userId')
+    .get((req, res) => {
+        const id = req.params.userId;
+
+        User.findUserById(id)
+            .then(user => {
+                if (user == null) {
+                    res.send('User not found');
+                } else {
+                    res.render('user/profile.html', {
+                        user: req.user,
+                        profile: user,
+                    })
+                }
             });
     });
 
