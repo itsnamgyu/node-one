@@ -25,7 +25,7 @@ router.route('/login')
         if (req.user !== undefined) {
             res.redirect('/user/me');
         } else {
-            res.sendFile(path.join(viewsDir, 'login.html'));
+            res.sendFile(path.join(viewsDir, 'user/login.html'));
         }
     })
     .post(passport.authenticate('local', {
@@ -41,7 +41,7 @@ router.route('/logout')
 
 router.route('/signup')
     .get((req, res) => {
-        res.sendFile(path.join(viewsDir, 'signup.html'));
+        res.sendFile(path.join(viewsDir, 'user/signup.html'));
     })
     .post((req, res) => {
         const body = req.body;
