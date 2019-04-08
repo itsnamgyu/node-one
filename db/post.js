@@ -79,10 +79,18 @@ function deletePost(id) {
         })
 }
 
+function getAllPosts() {
+    return pool.query('SELECT * FROM rest_one.post')
+        .then(q => {
+            return q.rows;
+        });
+}
+
 module.exports = {
     getPostById,
     getPostsByUser,
     createPost,
     updatePost,
     deletePost,
+    getAllPosts,
 };
