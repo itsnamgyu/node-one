@@ -1,16 +1,13 @@
 const express = require('express');
-
 const router = express.Router();
-const Database = require('../../database');
 
-const pool = Database.getPool();
 const User = require('../../db/user');
 
 router.route('/')
     .get((req, res) => {
         User.getAllUsers()
             .then((users) => {
-                res.json(users.rows);
+                res.json(users);
             })
             .catch((e) => {
                 console.log(e.stack);
@@ -19,30 +16,26 @@ router.route('/')
     })
     .post((req, res) => {
         const user = req.body;
-
-        console.log(Object.keys(user).join(','));
-        console.log(Object.values(user).join(','));
-        pool.query('INSERT INTO rest_one.user (name, email) VALUES ($1, $2) RETURNING *', [user.name, user.email])
-            .then((result) => {
-                console.log('POSTED user:');
-                console.log(result.rows[0]);
-                res.json(result.rows[0]);
-        });
+        User.createUser(user.email, null, user.name)
+            .then((user) => {
+                console.log('Created user:');
+                console.log(user);
+                res.json(user);
+            });
     });
 
 router.route('/:userId')
     .get((req, res) => {
         const id = req.params.userId;
 
-
-        pool.query('SELECT * FROM rest_one.user WHERE id=$1', [id])
-            .then((result) => {
-                if (result.rowCount === 0) {
+        User.findUserById(id)
+            .then(user => {
+                if (user == null) {
                     res.status(404).json({
                         'error_message': 'user not found',
                     });
                 } else {
-                    res.json(result.rows[0]);
+                    res.json(user);
                 }
             });
     })
@@ -57,27 +50,26 @@ router.route('/:userId')
             return;
         }
 
-        pool.query('SELECT * FROM rest_one.user WHERE id=$1', [id])
-            .then((result) => {
-                if (result.rowCount === 0) {
+        User.findUserById(id)
+            .then(user => {
+                if (user == null) {
                     res.status(404).json({
                         'error_message': 'user not found',
                     });
                 }
             });
 
-        const q = 'UPDATE rest_one.user SET name = $1, email = $2 WHERE id=$3 RETURNING *';
-        pool.query(q, [user.name, user.email, id])
-            .then((result) => {
-                res.json(result.rows[0]);
+        User.updateUser(user)
+            .then(user => {
+                res.json(user);
             });
     })
     .delete((req, res) => {
         const id = req.params.userId;
 
-        pool.query('DELETE FROM rest_one.user WHERE id=$1 RETURNING *', [id])
-            .then((result) => {
-                res.json(result.rows[0]);
+        User.deleteUser(id)
+            .then(user => {
+                res.json(user);
             });
     });
 
