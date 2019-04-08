@@ -31,6 +31,7 @@ app.use(passport.session({
 
 }));
 
+app.use('/', require('./routes/index'));
 app.use('/console', require('./routes/console'));
 app.use('/user', require('./routes/user'));
 app.use('/api/user', require('./routes/api/user'));

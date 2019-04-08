@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const User = require('../db/user');
 const passport = require('../passport').passport;
@@ -15,10 +16,21 @@ router.route('/')
             });
     });
 
+router.route('/me')
+    .get(ensureLoggedIn('/user/login'),
+        (req, res) => {
+        User.getAllUsers()
+            .then(users => {
+                res.render('user/me.html', {
+                    user: req.user,
+                });
+            });
+    });
+
 router.route('/login')
     .get((req, res) => {
         if (req.user !== undefined) {
-            res.redirect('/user');
+            res.redirect('/');
         } else {
             res.render('user/login.html');
         }
