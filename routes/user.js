@@ -9,20 +9,27 @@ const passport = require('../passport').passport;
 const viewsDir = path.join(path.dirname(__dirname), 'views');
 
 router.route('/')
-    .get(ensureLoggedIn('/user/login'),(req, res) => {
-        res.send('Welcome ' + req.user.name);
+    .get(ensureLoggedIn('/user/login'), (req, res) => {
+        res.redirect('/user/me');
+    });
+
+router.route('/me')
+    .get(ensureLoggedIn('/user/login'), (req, res) => {
+        res.render('user/me.html', {
+            user: req.user,
+        });
     });
 
 router.route('/login')
     .get((req, res) => {
         if (req.user !== undefined) {
-            res.redirect('/user');
+            res.redirect('/user/me');
         } else {
             res.sendFile(path.join(viewsDir, 'login.html'));
         }
     })
     .post(passport.authenticate('local', {
-            successRedirect: '/user',
+            successRedirect: '/user/me',
             failureRedirect: '/user/login',
         }));
 
