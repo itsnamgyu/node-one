@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+const passport = require('../passport').passport;
 
 const server = require('../oauth');
 
@@ -48,6 +49,14 @@ router.route('/token')
         //passport.authenticate('oauth2-client-password', { session: false }),
         server.token(),
         server.errorHandler(),
+    );
+
+router.route('/verify')
+    .post(
+        passport.authenticate('bearer', { session:false }),
+        (req, res) => {
+            res.json(req.user);
+        }
     );
 
 module.exports = router;
