@@ -36,6 +36,7 @@ app.use('/console', require('./routes/console'));
 app.use('/user', require('./routes/user'));
 app.use('/post', require('./routes/post'));
 app.use('/api/user', require('./routes/api/user'));
+app.use('/api/post', require('./routes/api/post'));
 app.use('/oauth', require('./routes/oauth'));
 
 const port = 3000;
