@@ -43,7 +43,7 @@ function findUserBy(key, value) {
             }
         })
         .catch(e => {
-            console.stack();
+            console.trace();
             console.log(e);
         });
 }
