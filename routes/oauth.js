@@ -3,19 +3,32 @@ const router = express.Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const server = require('../oauth');
-const passport = require('../passport').passport;
+
+const Client = require('../db/oauth_client');
 
 // Grant authorization form
 router.route('/authorize')
     .get(
         ensureLoggedIn('/user/login'),
         server.authorize((clientID, redirectURI, done) => {
-            // TODO: match registered clientID to redirectURI
-            throw new Error('not implemented');
+            Client.getVerifiedClient(clientID, redirectURI)
+                .then(client => {
+                    if (client == null) {
+                        done(null, false);
+                    } else {
+                        done(null, client, client.redirect_uri);
+                    }
+                })
+                .catch(e => {
+                    done(e);
+                });
         }),
         (req, res) => {
-            // TODO: return authorization selection page for user
-            throw new Error('not implemented');
+            res.render('authorize.html', {
+                transactionId: request.oauth2.transactionID,
+                user: request.user,
+                client: request.oauth2.client,
+            });
         }
     );
 
@@ -28,7 +41,11 @@ router.route('/authorize/submit')
 // Exchange grant for token
 router.route('/token')
     .post(
-        passport.authenticate('oauth2-client-password', { session: false }),
+        (req, res, next) => {
+            console.log(req.body);
+            next();
+        },
+        //passport.authenticate('oauth2-client-password', { session: false }),
         server.token(),
         server.errorHandler(),
     );

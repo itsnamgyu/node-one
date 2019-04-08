@@ -93,7 +93,7 @@ exports.up = function(db) {
                 },
                 client_id: {
                     type: 'int',
-                    notNull: true,
+                    notNull: false,
                     foreignKey: {
                         name: 'oauth_token_client_id_fkey',
                         table: 'oauth_client',
@@ -125,6 +125,9 @@ exports.up = function(db) {
         })
         .then(() => {
             return db.addIndex('oauth_token', 'oauth_token_client_id_user_id_value_key', ['client_id', 'user_id', 'value'], true);
+        })
+        .then(() => {
+            return db.addIndex('oauth_token', 'oauth_token_value_key', ['value'], true);
         });
 };
 

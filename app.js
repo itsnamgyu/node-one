@@ -3,7 +3,12 @@ const app = express();
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const session = require("express-session");
+const path = require('path');
+const ejs = require('ejs');
 
+app.engine('ejs', ejs.__express);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, './views'));
 app.use('/static', express.static('public'));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({'extended': false}));

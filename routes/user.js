@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const User = require('../db/user');
 const passport = require('../passport').passport;
@@ -8,7 +9,7 @@ const passport = require('../passport').passport;
 const viewsDir = path.join(path.dirname(__dirname), 'views');
 
 router.route('/')
-    .get(passport.loginRequired, (req, res) => {
+    .get(ensureLoggedIn('/user/login'),(req, res) => {
         res.send('Welcome ' + req.user.name);
     });
 

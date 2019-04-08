@@ -2,9 +2,11 @@ const passport = require('passport');
 const fs = require('fs');
 const LocalStrategy = require('passport-local').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
+const BearerStrategy = require('passport-http-bearer').Strategy;
 const ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 
 const User = require('./db/user');
+const Token = require('./db/oauth_token').Strategy;
 
 let initialized = false;
 
@@ -107,6 +109,30 @@ function init() {
             // TODO: verify clientId and clientSecret
             throw new Error('Not implemented');
         }));
+        passport.use('bearer', new BearerStrategy(
+            function(token, done) {
+                Token.getTokenByValue(token)
+                    .then(token => {
+                        if (token == null) {
+                            done(null, null);
+                            return Promise.reject(null);
+                        } else {
+                            return User.findUserById(token.userId);
+                        }
+                    })
+                    .then(user => {
+                        if (user == null) {
+                            done(new Error('no user associated with token'));
+                        } else {
+                            done(null, user);
+                        }
+                    })
+                    .catch(e => {
+                        if (e) {
+                            done(e);
+                        }
+                    });
+            }));
         initialized = true;
     }
 }

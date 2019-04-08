@@ -12,12 +12,16 @@ module.exports.getClientById = (id) => {
         });
 };
 
+module.exports.getClientsFor = (userId) => {
+    return pool.query('SELECT * FROM rest_one.oauth_client WHERE owner_id=$1', [userId])
+};
+
 module.exports.createClient = (userId, clientName, redirectURI) => {
     return Promise.all(uid(20, uid(40)))
         .then(t => {
             const id = t[0];
             const secret = t[1];
-            return pool.query('INSERT INTO rest_one.oauth_client VALUES (DEFAULT, $1, $2, $3, $4 RETURNING *',
+            return pool.query('INSERT INTO rest_one.oauth_client VALUES (DEFAULT, $1, $2, $3, $4) RETURNING *',
                 [userId, redirectURI, id, secret]);
         })
         .then(q => {
