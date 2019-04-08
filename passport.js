@@ -6,7 +6,7 @@ const BearerStrategy = require('passport-http-bearer').Strategy;
 const ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 
 const User = require('./db/user');
-const Token = require('./db/oauth_token').Strategy;
+const Token = require('./db/oauth_token');
 
 let initialized = false;
 
@@ -117,12 +117,14 @@ function init() {
                             done(null, null);
                             return Promise.reject(null);
                         } else {
-                            return User.findUserById(token.userId);
+                            return User.findUserById(token.user_id);
                         }
                     })
                     .then(user => {
                         if (user == null) {
-                            done(new Error('no user associated with token'));
+                            console.error('no user associated with token');
+                            console.trace();
+                            done('server error');
                         } else {
                             done(null, user);
                         }
