@@ -9,15 +9,10 @@ const passport = require('../passport').passport;
 const viewsDir = path.join(path.dirname(__dirname), 'views');
 
 router.route('/')
-    .get(ensureLoggedIn('/user/login'), (req, res) => {
-        res.redirect('/user/list');
-    });
-
-router.route('/list')
     .get((req, res) => {
         User.getAllUsers()
             .then(users => {
-                res.render('user/list.html', {
+                res.render('user/index.html', {
                     user: req.user,
                     users: users,
                 });
@@ -27,13 +22,13 @@ router.route('/list')
 router.route('/login')
     .get((req, res) => {
         if (req.user !== undefined) {
-            res.redirect('/user/me');
+            res.redirect('/user');
         } else {
             res.sendFile(path.join(viewsDir, 'user/login.html'));
         }
     })
     .post(passport.authenticate('local', {
-            successRedirect: '/user/list',
+            successRedirect: '/user',
             failureRedirect: '/user/login',
         }));
 
