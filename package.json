@@ -2,6 +2,7 @@
   "name": "rest-one",
   "version": "3.0.0",
   "description": "A step-by-step toy project on REST APIs using NodeJS",
+  "private": true,
   "main": "app.js",
   "dependencies": {
     "ajv": "^6.10.0",
