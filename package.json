@@ -1,7 +1,7 @@
 {
   "name": "rest-one",
-  "version": "1.0.0",
-  "description": "Simple REST API + Client using Node.js and ExpressJS",
+  "version": "3.0.0",
+  "description": "A step-by-step toy project on REST APIs using NodeJS",
   "main": "app.js",
   "dependencies": {
     "ajv": "^6.10.0",
