@@ -8,6 +8,7 @@ const server = require('../oauth');
 const Client = require('../db/oauth_client');
 
 // Grant authorization form
+// E.g., Do you allow this app to access your account?
 router.route('/authorize')
     .get(
         ensureLoggedIn('/user/login'),
@@ -34,12 +35,32 @@ router.route('/authorize')
     );
 
 // Post endpoint for grant authorization submission
+// E.g., post URI when you click Accept or Decline
 router.route('/authorize/submit')
     .post(
         ensureLoggedIn('/user/login'),
         server.decision());
 
-// Exchange grant for token
+/*
+    Exchange grant for token
+
+    Request POST body will include parameters such as
+        grant_type=code|password
+        code=AUTHENTICATION_CODE [grant_type==code]
+        username=user [grant_type==pasword]
+        password=password [grant_type==password]
+        redirect_uri=
+        client_id=
+        client_secret=
+
+    This is according to Oauth2 specs.
+
+    server.token() will call the appropriate handler according to grant_type
+        code: oauth2orize.exchange.code
+        password: oauth2orize.exchange.password
+
+    We defined these handlers in oauth.js via server.exchange(handler)
+*/
 router.route('/token')
     .post(
         (req, res, next) => {
@@ -51,6 +72,7 @@ router.route('/token')
         server.errorHandler(),
     );
 
+// Test endpoint to test bearer token authenication
 router.route('/verify')
     .post(
         passport.authenticate('bearer', { session:false }),

@@ -109,6 +109,20 @@ function init() {
             // TODO: verify clientId and clientSecret
             throw new Error('Not implemented');
         }));
+        /*
+            Verifies Bearer token sent in ANY one of these formats
+
+            1. HTTP Header
+                Authentication: Bearer <token>
+            2. GET query parameter
+                access_token=<token>
+            3. POST body
+                access_token: <token>
+            
+            As specified in the Oauth2.0 Bearer Token specs
+            Technically, the specs say that the POST methods can only be used when
+                Content-Type: application/x-www-form-urlencoded, per spec)
+        */
         passport.use('bearer', new BearerStrategy(
             function(token, done) {
                 Token.getTokenByValue(token)

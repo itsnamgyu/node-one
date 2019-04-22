@@ -5,6 +5,8 @@ const Grant= require('./db/oauth_grant');
 const Token = require('./db/oauth_token');
 const User = require('./db/user');
 
+// Veryify client.id, redirectURI and user and generate grant
+// Called by server.decision() middleware if it decides to give a grant
 server.grant(oauth2orize.grant.code(function(client, redirectURI, user, ares, done) {
     Grant.createGrant(client.id)
         .then(grant => {
@@ -15,6 +17,8 @@ server.grant(oauth2orize.grant.code(function(client, redirectURI, user, ares, do
         });
 }));
 
+// Verify client.id, redirectURI and grant code, and return a new token if valid.
+// Called by server.token() middleware if request grant_type==code
 server.exchange(oauth2orize.exchange.code(function(client, code, redirectURI, done) {
     Client.getVerifiedClient(client.id, redirectURI)
         .then((client) => {
@@ -35,6 +39,8 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectURI, do
         });
 }));
 
+// Verify client email/password and return a new token in valid
+// Called by server.token() middleware if request grant_type==code
 server.exchange(oauth2orize.exchange.password(function (client, email, password, scope, done) {
     Promise.resolve()
         .then(() => {
@@ -72,10 +78,13 @@ server.exchange(oauth2orize.exchange.password(function (client, email, password,
         });
 }));
 
+// Serialize client into an identifier to send to appliication
 server.serializeClient(function(client, done) {
     return done(null, client.id);
 });
 
+// Deserialize client identifier into original client when recieved from
+// application. The resulting client object is used within Oauth2orize callbacks.
 server.deserializeClient(function(id, done) {
     Client.getClientById(id)
         .then(client => {
